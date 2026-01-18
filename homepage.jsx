@@ -31,7 +31,7 @@ export default function HomePage() {
   if (loading) return <div className="p-20 text-center text-slate-400">Loading...</div>;
 
   return (
-    <div className="text-slate-50 bg-transparent animate-zoom-in" data-testid="home-page">
+    <div className="text-slate-50 bg-transparent" data-testid="home-page">
       {/* HERO */}
       <section
         className="relative h-[650px] mx-6 mt-8 mb-8 overflow-hidden rounded-3xl border border-slate-800/80"
@@ -132,34 +132,36 @@ export default function HomePage() {
         <div className="grid md:grid-cols-3 gap-8">
           {projects.slice(0, 6).map((p, idx) => (
             <ScrollReveal key={p.id || idx} delayMs={idx * 100} y={15}>
-              <div>
-                <Link 
-                  to={`/launches/${p.id}`} 
-                  className="group block rounded-2xl bg-slate-900/60 ring-1 ring-slate-800 hover:ring-cyan-400 transition-all overflow-hidden"
-                >
-                  <img src={p.image_url} className="h-40 w-full object-cover grayscale-[0.2] group-hover:grayscale-0 transition-all" alt={p.name} />
-                  <div className="p-5">
-                    <h3 className="text-sm font-semibold group-hover:text-cyan-400 transition-colors">{p.name}</h3>
-                    <div className="mt-3 h-1.5 bg-slate-700 rounded-full overflow-hidden">
-                      <div 
-                        className="h-1.5 bg-cyan-400 transition-all duration-1000" 
-                        style={{ width: `${p.progress_percent || 0}%` }} 
-                      />
-                    </div>
-                    <div className="mt-2 flex justify-between text-[10px] text-slate-400 uppercase tracking-tight">
-                      <span>{p.project_type}</span>
-                      <span>{p.progress_percent || 0}% funded</span>
-                    </div>
+              <Link 
+                to={`/launches/${p.id}`} 
+                className="group block rounded-2xl bg-slate-900/60 ring-1 ring-slate-800 hover:ring-cyan-400 transition-all overflow-hidden"
+              >
+                <img src={p.image_url} className="h-40 w-full object-cover grayscale-[0.2] group-hover:grayscale-0 transition-all" alt={p.name} />
+                <div className="p-5">
+                  <h3 className="text-sm font-semibold group-hover:text-cyan-400 transition-colors">{p.name}</h3>
+                  <div className="mt-3 h-1.5 bg-slate-700 rounded-full overflow-hidden">
+                    <div 
+                      className="h-1.5 bg-cyan-400 transition-all duration-1000" 
+                      style={{ width: `${p.progress_percent || 0}%` }} 
+                    />
                   </div>
-                </Link>
-                <div className="flex justify-center mt-8">
-                  <a href="/blog" className="border-2 border-cyan-500 text-cyan-500 hover:bg-cyan-500 hover:text-white font-bold py-2 px-6 rounded-lg transition duration-300">
-                    View More
-                  </a>
+                  <div className="mt-2 flex justify-between text-[10px] text-slate-400 uppercase tracking-tight">
+                    <span>{p.project_type}</span>
+                    <span>{p.progress_percent || 0}% funded</span>
+                  </div>
                 </div>
-              </div>
+              </Link>
             </ScrollReveal>
           ))}
+        </div>
+        
+        <div className="flex justify-center mt-12">
+          <Link
+            to="/launches"
+            className="inline-block rounded-full bg-cyan-500 px-6 py-3 text-sm font-semibold text-slate-950 hover:bg-cyan-400 transition-colors"
+          >
+            View More
+          </Link>
         </div>
       </section>
 
@@ -250,67 +252,80 @@ export default function HomePage() {
         <div className="grid md:grid-cols-3 gap-8" data-testid="home-recent-updates-grid">
           {[1, 2, 3].map((i, idx) => (
             <ScrollReveal key={i} delayMs={idx * 110}>
-              <div>
-                <div
-                  className="rounded-2xl bg-slate-900/60 ring-1 ring-slate-800 overflow-hidden"
-                  data-testid={`home-update-card-${i}`}
-                >
-                  <img
-                    src="https://as2.ftcdn.net/v2/jpg/02/46/77/29/1000_F_246772962_qHJsTucirASR4D77EhhdMDYqVgMKqwPW.jpg"
-                    className="h-32 w-full object-cover"
-                    alt="Blog"
-                    data-testid={`home-update-card-image-${i}`}
-                  />
-                  <div className="p-5" data-testid={`home-update-card-body-${i}`}>
-                    <h3 className="text-sm font-semibold" data-testid={`home-update-card-title-${i}`}>
-                      Platform Update #{i}
-                    </h3>
-                    <p className="mt-2 text-xs text-slate-400" data-testid={`home-update-card-description-${i}`}>
-                      Progress update on protocol development and ecosystem growth.
-                    </p>
-                    <a
-                      href="#"
-                      className="mt-4 inline-block rounded-full bg-cyan-500 px-4 py-1.5 text-xs font-semibold text-slate-950"
-                      data-testid={`home-update-card-more-link-${i}`}
-                    >
-                      More
-                    </a>
-                  </div>
-                </div>
-                <div className="flex justify-center mt-8">
-                  <a href="/blog" className="border-2 border-cyan-500 text-cyan-500 hover:bg-cyan-500 hover:text-white font-bold py-2 px-6 rounded-lg transition duration-300">
-                    View More
+              <div
+                className="rounded-2xl bg-slate-900/60 ring-1 ring-slate-800 overflow-hidden"
+                data-testid={`home-update-card-${i}`}
+              >
+                <img
+                  src="https://as2.ftcdn.net/v2/jpg/02/46/77/29/1000_F_246772962_qHJsTucirASR4D77EhhdMDYqVgMKqwPW.jpg"
+                  className="h-32 w-full object-cover"
+                  alt="Blog"
+                  data-testid={`home-update-card-image-${i}`}
+                />
+                <div className="p-5" data-testid={`home-update-card-body-${i}`}>
+                  <h3 className="text-sm font-semibold" data-testid={`home-update-card-title-${i}`}>
+                    Platform Update #{i}
+                  </h3>
+                  <p className="mt-2 text-xs text-slate-400" data-testid={`home-update-card-description-${i}`}>
+                    Progress update on protocol development and ecosystem growth.
+                  </p>
+                  <a
+                    href="#"
+                    className="mt-4 inline-block rounded-full bg-cyan-500 px-4 py-1.5 text-xs font-semibold text-slate-950"
+                    data-testid={`home-update-card-more-link-${i}`}
+                  >
+                    More
                   </a>
                 </div>
               </div>
             </ScrollReveal>
           ))}
         </div>
+        
+        <div className="flex justify-center mt-12">
+          <Link
+            to="/blog"
+            className="inline-block rounded-full bg-cyan-500 px-6 py-3 text-sm font-semibold text-slate-950 hover:bg-cyan-400 transition-colors"
+          >
+            View More
+          </Link>
+        </div>
       </section>
 
       <Divider />
 
       {/* FINAL CTA */}
-      <section className="py-6 text-center" data-testid="home-final-cta-section">
-        <ScrollReveal>
-          <h2 className="text-4xl font-semibold" data-testid="home-final-cta-title">
-            Launch your research on-chain
-          </h2>
-        </ScrollReveal>
-        <ScrollReveal delayMs={120}>
-          <p className="mt-4 text-slate-300" data-testid="home-final-cta-subtitle">
-            Apply to raise funding and build in public.
-          </p>
-        </ScrollReveal>
-        <ScrollReveal delayMs={220}>
-          <Link
-            to="/apply"
-            className="mt-8 inline-block rounded-full bg-cyan-500 px-8 py-4 font-semibold text-slate-950"
-            data-testid="home-final-cta-apply-button"
-          >
-            Apply to Launch
-          </Link>
-        </ScrollReveal>
+      <section 
+        className="relative py-32 text-center overflow-hidden" 
+        data-testid="home-final-cta-section"
+      >
+        <img
+          src="https://as2.ftcdn.net/v2/jpg/17/43/20/43/1000_F_1743204376_LNEUD8U7rneIXlNX7bg0WI7SWzXTiJo0.jpg"
+          className="absolute inset-0 h-full w-full object-cover"
+          alt="Background"
+        />
+        <div className="absolute inset-0 bg-[#0d1426]/80" />
+        <div className="relative z-10">
+          <ScrollReveal>
+            <h2 className="text-4xl font-semibold" data-testid="home-final-cta-title">
+              Launch your research on-chain
+            </h2>
+          </ScrollReveal>
+          <ScrollReveal delayMs={120}>
+            <p className="mt-4 text-slate-300" data-testid="home-final-cta-subtitle">
+              Apply to raise funding and build in public.
+            </p>
+          </ScrollReveal>
+          <ScrollReveal delayMs={220}>
+            <Link
+              to="/apply"
+              className="mt-8 inline-block rounded-full bg-cyan-500 px-8 py-4 font-semibold text-slate-950"
+              data-testid="home-final-cta-apply-button"
+            >
+              Apply to Launch
+            </Link>
+          </ScrollReveal>
+        </div>
       </section>
     </div>
   );
