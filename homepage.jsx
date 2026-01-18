@@ -39,7 +39,7 @@ export default function HomePage() {
       {/* HERO */}
       <section
         /* Removed py-6. Added mx-6 for horizontal snugness and mt-0 to touch the nav bar */
-        className="relative h-[650px] mx-6 mt-0 overflow-hidden rounded-3xl border border-slate-800/80"
+        className="relative h-[650px] mx-6 mt-8 mb-8 overflow-hidden rounded-3xl border border-slate-800/80"
         data-testid="home-hero-section"
       >
         <img
@@ -89,7 +89,7 @@ export default function HomePage() {
 
       {/* PLATFORM */}
       <section
-        className="mx-auto max-w-6xl px-6 py-9 grid md:grid-cols-2 gap-16"
+        className="mx-auto max-w-6xl px-6 py-9 mt-12 grid md:grid-cols-2 gap-16"
         data-testid="home-platform-section"
       >
         <ScrollReveal>
@@ -159,6 +159,11 @@ export default function HomePage() {
                   </div>
                 </div>
               </Link>
+              <div class="flex justify-center mt-8">
+                <a href="/blog" class="border-2 border-cyan-500 text-cyan-500 hover:bg-cyan-500 hover:text-white font-bold py-2 px-6 rounded-lg transition duration-300">
+                  View More
+                </a>
+              </div>
             </ScrollReveal>
           ))}
         </div>
@@ -186,8 +191,8 @@ export default function HomePage() {
                   </ScrollReveal>
           
                   <ScrollReveal delayMs={120}>
-                    <ul className="space-y-4 text-sm text-slate-300" data-testid="home-mission-timeline">
-                      <li>
+                    <ul className="space-y-4 text-sm text-slate-300 pl-20" data-testid="home-mission-timeline">
+                      <li class="transition-transform duration-300 hover:scale-110 cursor-pointer">
                         <strong>Q1 2026:</strong> Protocol launch & first cohorts
                       </li>
                       <li>
@@ -219,6 +224,26 @@ export default function HomePage() {
                 </section>
 
       <Divider />
+
+      <section className="py-16 bg-gray-900 text-white">
+          <div className="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between">
+            <div className="mb-8 md:mb-0 md:w-1/2">
+              <h2 className="text-3xl font-bold mb-4">Stay Updated</h2>
+              <p className="text-gray-400">Join our newsletter to get the latest breakthroughs in decentralized science delivered to your inbox.</p>
+            </div>
+            <form className="flex w-full md:w-auto gap-2">
+              {/* ADDED THE FORWARD SLASH TO CLOSE THE INPUT TAG BELOW */}
+              <input 
+                type="email" 
+                placeholder="Enter your email" 
+                className="px-4 py-3 rounded-lg bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-cyan-500 w-full md:w-64" 
+              />
+              <button type="submit" className="bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300 whitespace-nowrap">
+                Join Now
+              </button>
+            </form>
+          </div>
+        </section>
 
       {/* RECENT UPDATES */}
       <section className="mx-auto max-w-6xl px-6 py-6" data-testid="home-recent-updates-section">
@@ -256,6 +281,11 @@ export default function HomePage() {
                     More
                   </a>
                 </div>
+              </div>
+              <div class="flex justify-center mt-8">
+                <a href="/blog" class="border-2 border-cyan-500 text-cyan-500 hover:bg-cyan-500 hover:text-white font-bold py-2 px-6 rounded-lg transition duration-300">
+                  View More
+                </a>
               </div>
             </ScrollReveal>
           ))}
