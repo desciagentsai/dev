@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios"; // Match your working page
+import axios from "axios";
 import { Link } from "react-router-dom";
 import ScrollReveal from "../components/ScrollReveal";
 
 const Divider = () => <div className="h-px bg-slate-800/50 mx-auto max-w-6xl" />;
 
-// Match the env var logic from your working page
 const backendUrl = process.env.REACT_APP_BACKEND_URL || "https://desci-backend.onrender.com";
 
 export default function HomePage() {
@@ -15,10 +14,7 @@ export default function HomePage() {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        // Use axios.get to match your working page's behavior
         const response = await axios.get(`${backendUrl}/api/launchpad/projects`);
-        
-        // Axios puts the data in response.data automatically
         const data = response.data;
         setProjects(Array.isArray(data) ? data : []);
       } catch (error) {
@@ -35,10 +31,9 @@ export default function HomePage() {
   if (loading) return <div className="p-20 text-center text-slate-400">Loading...</div>;
 
   return (
-    <div className="text-slate-50 bg-transparent" data-testid="home-page">
+    <div className="text-slate-50 bg-transparent animate-zoom-in" data-testid="home-page">
       {/* HERO */}
       <section
-        /* Removed py-6. Added mx-6 for horizontal snugness and mt-0 to touch the nav bar */
         className="relative h-[650px] mx-6 mt-8 mb-8 overflow-hidden rounded-3xl border border-slate-800/80"
         data-testid="home-hero-section"
       >
@@ -85,8 +80,6 @@ export default function HomePage() {
         </div>
       </section>
 
-    
-
       {/* PLATFORM */}
       <section
         className="mx-auto max-w-6xl px-6 py-9 mt-12 grid md:grid-cols-2 gap-16"
@@ -110,7 +103,6 @@ export default function HomePage() {
 
             <Link
               to="/docs"
-              /* Added mt-8 (margin-top) and inline-block */
               className="mt-8 inline-block rounded-full bg-cyan-500 px-6 py-3 text-sm font-semibold text-slate-950 hover:bg-cyan-400 transition-colors"
               data-testid="home-platform-docs-link"
             >
@@ -140,114 +132,113 @@ export default function HomePage() {
         <div className="grid md:grid-cols-3 gap-8">
           {projects.slice(0, 6).map((p, idx) => (
             <ScrollReveal key={p.id || idx} delayMs={idx * 100} y={15}>
-              <Link 
-                to={`/launches/${p.id}`} 
-                className="group block rounded-2xl bg-slate-900/60 ring-1 ring-slate-800 hover:ring-cyan-400 transition-all overflow-hidden"
-              >
-                <img src={p.image_url} className="h-40 w-full object-cover grayscale-[0.2] group-hover:grayscale-0 transition-all" alt={p.name} />
-                <div className="p-5">
-                  <h3 className="text-sm font-semibold group-hover:text-cyan-400 transition-colors">{p.name}</h3>
-                  <div className="mt-3 h-1.5 bg-slate-700 rounded-full overflow-hidden">
-                    <div 
-                      className="h-1.5 bg-cyan-400 transition-all duration-1000" 
-                      style={{ width: `${p.progress_percent || 0}%` }} 
-                    />
+              <div>
+                <Link 
+                  to={`/launches/${p.id}`} 
+                  className="group block rounded-2xl bg-slate-900/60 ring-1 ring-slate-800 hover:ring-cyan-400 transition-all overflow-hidden"
+                >
+                  <img src={p.image_url} className="h-40 w-full object-cover grayscale-[0.2] group-hover:grayscale-0 transition-all" alt={p.name} />
+                  <div className="p-5">
+                    <h3 className="text-sm font-semibold group-hover:text-cyan-400 transition-colors">{p.name}</h3>
+                    <div className="mt-3 h-1.5 bg-slate-700 rounded-full overflow-hidden">
+                      <div 
+                        className="h-1.5 bg-cyan-400 transition-all duration-1000" 
+                        style={{ width: `${p.progress_percent || 0}%` }} 
+                      />
+                    </div>
+                    <div className="mt-2 flex justify-between text-[10px] text-slate-400 uppercase tracking-tight">
+                      <span>{p.project_type}</span>
+                      <span>{p.progress_percent || 0}% funded</span>
+                    </div>
                   </div>
-                  <div className="mt-2 flex justify-between text-[10px] text-slate-400 uppercase tracking-tight">
-                    <span>{p.project_type}</span>
-                    <span>{p.progress_percent || 0}% funded</span>
-                  </div>
+                </Link>
+                <div className="flex justify-center mt-8">
+                  <a href="/blog" className="border-2 border-cyan-500 text-cyan-500 hover:bg-cyan-500 hover:text-white font-bold py-2 px-6 rounded-lg transition duration-300">
+                    View More
+                  </a>
                 </div>
-              </Link>
-              <div class="flex justify-center mt-8">
-                <a href="/blog" class="border-2 border-cyan-500 text-cyan-500 hover:bg-cyan-500 hover:text-white font-bold py-2 px-6 rounded-lg transition duration-300">
-                  View More
-                </a>
               </div>
             </ScrollReveal>
           ))}
         </div>
       </section>
 
-
       <Divider />
-      
 
-                {/* TIMELINE */}
-                <section
-                  className="mx-auto max-w-6xl px-6 py-9 grid md:grid-cols-2 gap-16"
-                  data-testid="home-timeline-section"
-                >
-                  <ScrollReveal>
-                    <div data-testid="home-mission-copy">
-                      <h2 className="text-3xl font-semibold" data-testid="home-mission-title">
-                        Our Mission
-                      </h2>
-                      <p className="mt-4 text-slate-300" data-testid="home-mission-description">
-                        We are committed to accelerating scientific discovery by aligning
-                        incentives, transparency, and global collaboration.
-                      </p>
-                    </div>
-                  </ScrollReveal>
-          
-                  <ScrollReveal delayMs={120}>
-                    <ul className="space-y-4 text-sm text-slate-300 pl-20" data-testid="home-mission-timeline">
-                      <li class="transition-transform duration-300 hover:scale-110 cursor-pointer">
-                        <strong>Q1 2026:</strong> Protocol launch & first cohorts
-                      </li>
-                      <li>
-                        <strong>Q2 2026:</strong> Protocol testing & debugging
-                      </li>
-                      <li>
-                        <strong>Q3 2026:</strong> DAO governance rollout
-                      </li>
-                      <li>
-                        <strong>Q4 2026:</strong> Cross-chain funding expansion
-                      </li>
-                      <li>
-                        <strong>Q1 2027:</strong> Adding new chains to the protocol
-                      </li>
-                      <li>
-                        <strong>Q2 2027:</strong> Institutional Adoption
-                      </li>
-                      <li>
-                        <strong>Q3 2027:</strong> Institutional partnerships
-                      </li>
-                      <li>
-                        <strong>Q4 2027:</strong> Growing the ecosystem
-                      </li>
-                      <li>
-                        <strong>Q1 2028:</strong> Global research marketplace
-                      </li>
-                    </ul>
-                  </ScrollReveal>
-                </section>
+      {/* TIMELINE */}
+      <section
+        className="mx-auto max-w-6xl px-6 py-9 grid md:grid-cols-2 gap-16"
+        data-testid="home-timeline-section"
+      >
+        <ScrollReveal>
+          <div data-testid="home-mission-copy">
+            <h2 className="text-3xl font-semibold" data-testid="home-mission-title">
+              Our Mission
+            </h2>
+            <p className="mt-4 text-slate-300" data-testid="home-mission-description">
+              We are committed to accelerating scientific discovery by aligning
+              incentives, transparency, and global collaboration.
+            </p>
+          </div>
+        </ScrollReveal>
+
+        <ScrollReveal delayMs={120}>
+          <ul className="space-y-4 text-sm text-slate-300 pl-20" data-testid="home-mission-timeline">
+            <li className="transition-transform duration-300 hover:scale-110 cursor-pointer">
+              <strong>Q1 2026:</strong> Protocol launch & first cohorts
+            </li>
+            <li>
+              <strong>Q2 2026:</strong> Protocol testing & debugging
+            </li>
+            <li>
+              <strong>Q3 2026:</strong> DAO governance rollout
+            </li>
+            <li>
+              <strong>Q4 2026:</strong> Cross-chain funding expansion
+            </li>
+            <li>
+              <strong>Q1 2027:</strong> Adding new chains to the protocol
+            </li>
+            <li>
+              <strong>Q2 2027:</strong> Institutional Adoption
+            </li>
+            <li>
+              <strong>Q3 2027:</strong> Institutional partnerships
+            </li>
+            <li>
+              <strong>Q4 2027:</strong> Growing the ecosystem
+            </li>
+            <li>
+              <strong>Q1 2028:</strong> Global research marketplace
+            </li>
+          </ul>
+        </ScrollReveal>
+      </section>
 
       <Divider />
 
       <section className="py-16 bg-gray-900 text-white">
-          <div className="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between">
-            <div className="mb-8 md:mb-0 md:w-1/2">
-              <h2 className="text-3xl font-bold mb-4">Stay Updated</h2>
-              <p className="text-gray-400">
-                Join our newsletter to get the latest breakthroughs in decentralized science delivered to your inbox.
-              </p>
-            </div>
-            <form className="flex w-full md:w-auto gap-2" onSubmit={(e) => e.preventDefault()}>
-              <input 
-                type="email" 
-                placeholder="Enter your email" 
-                className="px-4 py-3 rounded-lg bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-cyan-500 w-full md:w-64" 
-              />
-              <button 
-                type="submit" 
-                className="bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300 whitespace-nowrap"
-              >
-                Join Now
-              </button>
-            </form>
+        <div className="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between">
+          <div className="mb-8 md:mb-0 md:w-1/2">
+            <h2 className="text-3xl font-bold mb-4">Stay Updated</h2>
+            <p className="text-gray-400">Join our newsletter to get the latest breakthroughs in decentralized science delivered to your inbox.</p>
           </div>
-        </section>
+          <form className="flex w-full md:w-auto gap-2">
+            <input 
+              type="email" 
+              placeholder="Enter your email" 
+              className="px-4 py-3 rounded-lg bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-cyan-500 w-full md:w-64"
+            />
+            <button 
+              type="submit" 
+              className="bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-3 px-6 rounded-lg transition duration-300 whitespace-nowrap"
+            >
+              Join Now
+            </button>
+          </form>
+        </div>
+      </section>
+
       {/* RECENT UPDATES */}
       <section className="mx-auto max-w-6xl px-6 py-6" data-testid="home-recent-updates-section">
         <ScrollReveal>
@@ -259,36 +250,38 @@ export default function HomePage() {
         <div className="grid md:grid-cols-3 gap-8" data-testid="home-recent-updates-grid">
           {[1, 2, 3].map((i, idx) => (
             <ScrollReveal key={i} delayMs={idx * 110}>
-              <div
-                className="rounded-2xl bg-slate-900/60 ring-1 ring-slate-800 overflow-hidden"
-                data-testid={`home-update-card-${i}`}
-              >
-                <img
-                  src="https://as2.ftcdn.net/v2/jpg/02/46/77/29/1000_F_246772962_qHJsTucirASR4D77EhhdMDYqVgMKqwPW.jpg"
-                  className="h-32 w-full object-cover"
-                  alt="Blog"
-                  data-testid={`home-update-card-image-${i}`}
-                />
-                <div className="p-5" data-testid={`home-update-card-body-${i}`}>
-                  <h3 className="text-sm font-semibold" data-testid={`home-update-card-title-${i}`}>
-                    Platform Update #{i}
-                  </h3>
-                  <p className="mt-2 text-xs text-slate-400" data-testid={`home-update-card-description-${i}`}>
-                    Progress update on protocol development and ecosystem growth.
-                  </p>
-                  <a
-                    href="#"
-                    className="mt-4 inline-block rounded-full bg-cyan-500 px-4 py-1.5 text-xs font-semibold text-slate-950"
-                    data-testid={`home-update-card-more-link-${i}`}
-                  >
-                    More
+              <div>
+                <div
+                  className="rounded-2xl bg-slate-900/60 ring-1 ring-slate-800 overflow-hidden"
+                  data-testid={`home-update-card-${i}`}
+                >
+                  <img
+                    src="https://as2.ftcdn.net/v2/jpg/02/46/77/29/1000_F_246772962_qHJsTucirASR4D77EhhdMDYqVgMKqwPW.jpg"
+                    className="h-32 w-full object-cover"
+                    alt="Blog"
+                    data-testid={`home-update-card-image-${i}`}
+                  />
+                  <div className="p-5" data-testid={`home-update-card-body-${i}`}>
+                    <h3 className="text-sm font-semibold" data-testid={`home-update-card-title-${i}`}>
+                      Platform Update #{i}
+                    </h3>
+                    <p className="mt-2 text-xs text-slate-400" data-testid={`home-update-card-description-${i}`}>
+                      Progress update on protocol development and ecosystem growth.
+                    </p>
+                    <a
+                      href="#"
+                      className="mt-4 inline-block rounded-full bg-cyan-500 px-4 py-1.5 text-xs font-semibold text-slate-950"
+                      data-testid={`home-update-card-more-link-${i}`}
+                    >
+                      More
+                    </a>
+                  </div>
+                </div>
+                <div className="flex justify-center mt-8">
+                  <a href="/blog" className="border-2 border-cyan-500 text-cyan-500 hover:bg-cyan-500 hover:text-white font-bold py-2 px-6 rounded-lg transition duration-300">
+                    View More
                   </a>
                 </div>
-              </div>
-              <div class="flex justify-center mt-8">
-                <a href="/blog" class="border-2 border-cyan-500 text-cyan-500 hover:bg-cyan-500 hover:text-white font-bold py-2 px-6 rounded-lg transition duration-300">
-                  View More
-                </a>
               </div>
             </ScrollReveal>
           ))}
@@ -297,7 +290,7 @@ export default function HomePage() {
 
       <Divider />
 
-      {/* FINAL CTA (unchanged) */}
+      {/* FINAL CTA */}
       <section className="py-6 text-center" data-testid="home-final-cta-section">
         <ScrollReveal>
           <h2 className="text-4xl font-semibold" data-testid="home-final-cta-title">
