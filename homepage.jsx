@@ -186,31 +186,31 @@ export default function HomePage() {
 
         <ScrollReveal delayMs={120}>
           <ul className="space-y-4 text-sm text-slate-300 pl-20" data-testid="home-mission-timeline">
-            <li className="transition-transform duration-300 hover:scale-110 cursor-pointer">
+            <li className="transition-transform duration-300 hover:scale-150 cursor-pointer">
               <strong>Q1 2026:</strong> Protocol launch & first cohorts
             </li>
-            <li>
+            <li className="transition-transform duration-300 hover:scale-150 cursor-pointer">
               <strong>Q2 2026:</strong> Protocol testing & debugging
             </li>
-            <li>
+            <li className="transition-transform duration-300 hover:scale-150 cursor-pointer">
               <strong>Q3 2026:</strong> DAO governance rollout
             </li>
-            <li>
+            <li className="transition-transform duration-300 hover:scale-150 cursor-pointer">
               <strong>Q4 2026:</strong> Cross-chain funding expansion
             </li>
-            <li>
+            <li className="transition-transform duration-300 hover:scale-150 cursor-pointer">
               <strong>Q1 2027:</strong> Adding new chains to the protocol
             </li>
-            <li>
+            <li className="transition-transform duration-300 hover:scale-150 cursor-pointer">
               <strong>Q2 2027:</strong> Institutional Adoption
             </li>
-            <li>
+            <li className="transition-transform duration-300 hover:scale-150 cursor-pointer">
               <strong>Q3 2027:</strong> Institutional partnerships
             </li>
-            <li>
+            <li className="transition-transform duration-300 hover:scale-150 cursor-pointer">
               <strong>Q4 2027:</strong> Growing the ecosystem
             </li>
-            <li>
+            <li className="transition-transform duration-300 hover:scale-150 cursor-pointer">
               <strong>Q1 2028:</strong> Global research marketplace
             </li>
           </ul>
