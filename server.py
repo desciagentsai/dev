@@ -59,7 +59,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
 # ----------------------
 # API Routers
 # ----------------------
@@ -67,7 +66,6 @@ app.add_middleware(
 app.include_router(auth_router, prefix="/api")
 app.include_router(launchpad_router, prefix="/api")
 app.include_router(slideshow_router, prefix="/api")
-
 
 # ----------------------
 # Base Route
@@ -217,6 +215,142 @@ async def get_projects_collection():
 
 async def get_admins_collection():
     return db.admin_users
+
+# ======================================================
+# NEW ADMIN DASHBOARD ENDPOINTS (ADDED ONLY)
+# ======================================================
+
+admin_router = APIRouter(prefix="/api/admin", tags=["Admin"])
+
+# -------- USERS --------
+
+@admin_router.get("/users")
+async def list_users():
+    return await db.admin_users.find().to_list(1000)
+
+@admin_router.get("/users/{user_id}")
+async def get_user(user_id: str):
+    user = await db.admin_users.find_one({"id": user_id})
+    if not user:
+        raise HTTPException(404, "User not found")
+    return user
+
+@admin_router.patch("/users/{user_id}")
+async def update_user(user_id: str, payload: dict):
+    await db.admin_users.update_one({"id": user_id}, {"$set": payload})
+    return {"status": "updated"}
+
+@admin_router.delete("/users/{user_id}")
+async def delete_user(user_id: str):
+    await db.admin_users.delete_one({"id": user_id})
+    return {"status": "deleted"}
+
+# -------- PROJECTS --------
+
+@admin_router.post("/projects")
+async def create_project(project: ProjectCreate):
+    ensure_desci_address(project.desci_token_address)
+    doc = project.model_dump()
+    doc.update({
+        "id": str(uuid.uuid4()),
+        "status": "draft",
+        "created_at": datetime.now(timezone.utc),
+        "updated_at": datetime.now(timezone.utc),
+    })
+    await db.projects.insert_one(doc)
+    return doc
+
+@admin_router.patch("/projects/{project_id}")
+async def update_project(project_id: str, payload: dict):
+    payload["updated_at"] = datetime.now(timezone.utc)
+    await db.projects.update_one({"id": project_id}, {"$set": payload})
+    return {"status": "updated"}
+
+@admin_router.delete("/projects/{project_id}")
+async def delete_project(project_id: str):
+    await db.projects.delete_one({"id": project_id})
+    return {"status": "deleted"}
+
+# -------- PRODUCTS --------
+
+@admin_router.get("/products")
+async def list_products():
+    return await db.products.find().to_list(1000)
+
+@admin_router.post("/products")
+async def create_product(payload: dict):
+    payload["id"] = str(uuid.uuid4())
+    await db.products.insert_one(payload)
+    return payload
+
+@admin_router.put("/products/{product_id}")
+async def update_product(product_id: str, payload: dict):
+    await db.products.update_one({"id": product_id}, {"$set": payload})
+    return {"status": "updated"}
+
+@admin_router.delete("/products/{product_id}")
+async def delete_product(product_id: str):
+    await db.products.delete_one({"id": product_id})
+    return {"status": "deleted"}
+
+# -------- ORDERS --------
+
+@admin_router.get("/orders")
+async def list_orders():
+    return await db.orders.find().to_list(1000)
+
+@admin_router.get("/orders/{order_id}")
+async def get_order(order_id: str):
+    order = await db.orders.find_one({"id": order_id})
+    if not order:
+        raise HTTPException(404, "Order not found")
+    return order
+
+@admin_router.patch("/orders/{order_id}/status")
+async def update_order_status(order_id: str, status: dict):
+    await db.orders.update_one({"id": order_id}, {"$set": status})
+    return {"status": "updated"}
+
+# -------- TRANSACTIONS --------
+
+@admin_router.get("/transactions")
+async def list_transactions():
+    return await db.transactions.find().to_list(2000)
+
+# -------- SITE CONFIG --------
+
+@admin_router.get("/config")
+async def get_site_config():
+    return await db.site_config.find_one({}) or {}
+
+@admin_router.put("/config")
+async def update_site_config(payload: dict):
+    await db.site_config.update_one({}, {"$set": payload}, upsert=True)
+    return {"status": "updated"}
+
+# -------- SLIDESHOW --------
+
+@app.post("/api/slideshow/slides")
+async def create_slide(payload: dict):
+    payload["id"] = str(uuid.uuid4())
+    await db.slides.insert_one(payload)
+    return payload
+
+@app.put("/api/slideshow/slides/{slide_id}")
+async def update_slide(slide_id: str, payload: dict):
+    await db.slides.update_one({"id": slide_id}, {"$set": payload})
+    return {"status": "updated"}
+
+@app.delete("/api/slideshow/slides/{slide_id}")
+async def delete_slide(slide_id: str):
+    await db.slides.delete_one({"id": slide_id})
+    return {"status": "deleted"}
+
+# ----------------------
+# Register Admin Router
+# ----------------------
+
+app.include_router(admin_router)
 
 # ----------------------
 # Shutdown
